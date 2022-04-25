@@ -77,17 +77,18 @@ async function flipCoins(event) {
     event.preventDefault();
 
     const endpoint = "app/flip/coins/"
-    const url = document.baseURI+endpoint
+    const url = document.baseURI + endpoint
 
     const formEvent = event.currentTarget
 
     try {
         const formData = new FormData(formEvent);
+        //console.log(formData)
         const flips = await sendFlips({ url, formData });
 
         console.log(flips);
-        document.getElementById("heads").innerHTML = "Heads: "+flips.summary.heads;
-        document.getElementById("tails").innerHTML = "Tails: "+flips.summary.tails;
+        document.getElementById("heads").innerHTML = "Heads: " + flips.summary.heads;
+        document.getElementById("tails").innerHTML = "Tails: " + flips.summary.tails;
         const par = document.getElementById("raw")
         while (par.firstChild) {
             par.removeChild(par.firstChild);
@@ -97,10 +98,10 @@ async function flipCoins(event) {
             img.src = "./assets/img/" + flips.raw[i] + ".png"
             par.appendChild(img)
         }
-
+        //document.getElementById("raw").innerHTML = "Actual Flips: " + flips.raw;
     } catch (error) {
         console.log(error);
-}
+    }
 }
 // Create a data sender
 async function sendFlips({ url, formData }) {
@@ -114,13 +115,13 @@ async function sendFlips({ url, formData }) {
             "Content-Type": "application/json",
             Accept: "application/json"
         },
-        body: formDataJson
+        body: formDataJsonString
     };
 
     const response = await fetch(url, options);
     return response.json()
-    }
-
+}
+   
 
 // Guess a flip by clicking either heads or tails button
 

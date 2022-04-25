@@ -122,16 +122,9 @@ app.use((req, res, next) => {
   next();
 });
 
-if (log == true) {
-    // Use morgan for logging to files
-    // Create a write stream to append (flags: 'a') to a file
-    const accessLog = fs.createWriteStream('access.log', { flags: 'a' })
-    // Set up the access logging middleware
-    app.use(morgan('combined', { stream: accessLog }))
-}
 // Debug argument
 if (debug === true){
-  app.get("/app/log/access", (req, res) => {
+    app.get("/app/log/access/", (req, res) => {
     try {
         const stmt = logdb.prepare('SELECT * FROM accesslog').all();
         res.status(200).json(stmt)
@@ -143,6 +136,13 @@ if (debug === true){
   app.get("/app/error/", (req, res) => {
     throw new Error("Error test successful")
   })
+}
+if (log == true) {
+    // Use morgan for logging to files
+    // Create a write stream to append (flags: 'a') to a file
+    const accessLog = fs.createWriteStream('access.log', { flags: 'a' })
+    // Set up the access logging middleware
+    app.use(morgan('combined', { stream: accessLog }))
 }
 
 // Define check endpoint
@@ -164,16 +164,9 @@ app.get("/app/flip", (req, res) => {
 app.get("/app/flips/:number", (req, res) => {
   var flipVar2 = coinFlips(req.params.number);
   var flipVar3 = countFlips(flipVar2);
-  res.status(200).json({ raw: flipVar2, summary: flipVar3 });
+  res.status(200).json({ "raw": flipVar2, "summary": flipVar3 });
 });
 
-app.get("/app/flip/call/heads", (req, res) => {
-  res.status(200).json(flipACoin("heads"));
-});
-
-app.get("/app/flip/call/:tails", (req, res) => {
-  res.status(200).json(flipACoin("tails"));
-});
 
 // Flip a bunch of coins with one body variable (number)
 app.post('/app/flip/coins/', (req, res, next) => {
@@ -186,6 +179,15 @@ app.post('/app/flip/call/', (req, res, next) => {
     const game = flipACoin(req.body.guess)
     res.status(200).json(game)
 })
+
+app.get("/app/flip/call/heads", (req, res) => {
+    res.status(200).json(flipACoin("heads"));
+  });
+  
+  app.get("/app/flip/call/:tails", (req, res) => {
+    res.status(200).json(flipACoin("tails"));
+  });
+  
 
 // Define default endpoint
 // Default response for any other request
