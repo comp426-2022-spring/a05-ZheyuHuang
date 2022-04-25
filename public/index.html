@@ -85,13 +85,17 @@
 
 
     <div id="guess" class="hidden">
-      <h1>Guess</h1>
-      <button id="headbutton">Heads</button>
-      <button id="tailbutton">Tails</button>
-      <h2>Results</h2>
-      <p id="guesspic"></p>
-      <p id="actual"></p>
-      <p id="win"></p>
+      <form id="call">
+        <p><strong>Heads or Tails?</strong></p>
+        <label for="input">Heads</label>
+        <input type="range" id="input" name="input" min="0" max="1" width="10px">
+        <label for="input">Tails</label>
+        <input type="submit" value="Flip!">
+      </form>
+
+      <div id="guessresult" class="hidden">
+      </div>
+
 
     </div>
 	<script src="main.js"></script>
