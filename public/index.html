@@ -54,20 +54,37 @@
       <br>
     
     </div>    
+
     <div id="single" class="hidden">
+          <h1>Flip a Coin</h1>
           <!-- A "coin" button -->
-          <button id="coin">Flip?</button>
+          <button id="">Flip?</button>
           <!-- A status paragraph -->
               <p id="active"></p>
           <!-- A result paragraph-->
               <p>Result: <span id="result"></span></p>
           <!-- An image of a US quarter (North Carolina variant) -->
               <img src="./assets/img/coin.png" id="quarter">
-    
     </div>
+
     <div id="multi" class="hidden">
-      
+        <h1>Flip Coins</h1>
+        <form id="coins">
+          <label for="number">
+            <strong>Choose the amount you want to flip</strong>
+          </label>
+          <input type="number" name="number" id="number">
+          <input type="submit" value="Go!">
+        </form>
+
+        <h2>Results</h2>
+        <p id="raw"></p>
+        <p id="heads"></p>
+        <p id="tails"></p>
+  
     </div>
+
+
     <div id="guess" class="hidden">
       
     </div>
