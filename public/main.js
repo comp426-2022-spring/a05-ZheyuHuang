@@ -124,3 +124,99 @@ async function sendFlips({ url, formData }) {
 
 // Guess a flip by clicking either heads or tails button
 const heads = document.getElementById("headbutton")
+// Add event listener for coins form
+heads.addEventListener("click", guessHeads)
+
+async function guessHeads(event) {
+    event.preventDefault();
+
+    const endpoint = "app/flip/call/"
+    const url = document.baseURI + endpoint
+
+    const guess = {"guess" : "heads"}
+
+    try {
+        const flips = await guessFlip({ url, guess });
+
+        console.log(flips);
+        const para = document.getElementById("guesspic")
+        para.innerHTML = "Guess: "
+        var img = document.createElement("img")
+        img.src = "./assets/img/" + flips.call + ".png"
+        para.appendChild(img)
+
+        const para2 = document.getElementById("actual")
+        para2.innerHTML = "Actual flip: "
+        var img = document.createElement("img")
+        img.src = "./assets/img/" + flips.flip + ".png"
+        para2.appendChild(img)
+
+        document.getElementById("win").innerHTML = "You " + flips.result;
+    } catch (error) {
+        console.log(error);
+    }
+}
+async function guessFlip({ url, guess }) {
+    const formDataJson = JSON.stringify(guess);
+    console.log(formDataJson);
+
+    const options = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json"
+        },
+        body: formDataJson
+    };
+
+    const response = await fetch(url, options);
+    return response.json()
+}
+
+const tails = document.getElementById("tailbutton")
+tails.addEventListener("click", guessTails)
+
+async function guessTails(event) {
+    event.preventDefault();
+
+    const endpoint = "app/flip/call/"
+    const url = document.baseURI + endpoint
+
+    const guess = { "guess": "tails" }
+
+    try {
+        const flips = await guessFlip({ url, guess });
+
+        console.log(flips);
+        const para = document.getElementById("guesspic")
+        para.innerHTML = "Guess: "
+        var img = document.createElement("img")
+        img.src = "./assets/img/" + flips.call + ".png"
+        para.appendChild(img)
+
+        const para2 = document.getElementById("actual")
+        para2.innerHTML = "Actual flip: "
+        var img = document.createElement("img")
+        img.src = "./assets/img/" + flips.flip + ".png"
+        para2.appendChild(img)
+        document.getElementById("win").innerHTML = "You " + flips.result;
+    } catch (error) {
+        console.log(error);
+    }
+}
+async function guessFlip({ url, guess }) {
+    const formDataJson = JSON.stringify(guess);
+    console.log(formDataJson);
+
+    const options = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json"
+        },
+        body: formDataJson
+    };
+
+    const response = await fetch(url, options);
+    return response.json()
+}
