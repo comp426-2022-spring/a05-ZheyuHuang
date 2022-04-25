@@ -2,13 +2,16 @@
 // Require Express.js
 const express = require("express");
 const app = express();
-
 const logdb = require('./src/services/database.js')
 const morgan = require("morgan")
-//const errorhandler = request('errorhandler')
 const fs = require("fs")
-
 const args = require("minimist")(process.argv.slice(2));
+
+// Serve static HTML files
+app.use(express.static('./public'));
+
+// Make Express use its own built-in body parser to handle JSON
+app.use(express.json());
 
 const port = args.port || 5000
 const debug = args.debug || false
@@ -17,7 +20,6 @@ const help = args.help
 
 args["port", "debug", "log", "help"]
 console.log(args)
-
 
 const helpmsg = (`
 --port	Set the port number for the server to listen on. Must be an integer
@@ -39,12 +41,6 @@ if (args.help || args.h) {
     console.log(helpmsg)
     process.exit(0)
 }
-
-// Serve static HTML files
-app.use(express.static('./public'));
-
-// Make Express use its own built-in body parser to handle JSON
-app.use(express.json());
 
 // Copy functions from A2
 function coinFlip() {
@@ -107,16 +103,6 @@ const server = app.listen(port, () => {
   console.log("App listening on port %PORT%".replace("%PORT%", port));
 });
 
-// Define check endpoint
-app.get("/app/", (req, res) => {
-  // Respond with status 200
-  res.statusCode = 200;
-  // Respond with status message "OK"
-  res.statusMessage = "OK";
-  res.writeHead(res.statusCode, { "Content-Type": "text/plain" });
-  res.end(res.statusCode + " " + res.statusMessage);
-});
-
 app.use((req, res, next) => {
   let data = {
       remoteaddr: req.ip,
@@ -159,6 +145,16 @@ if (debug === true){
   })
 }
 
+// Define check endpoint
+app.get("/app/", (req, res) => {
+    // Respond with status 200
+    res.statusCode = 200;
+    // Respond with status message "OK"
+    res.statusMessage = "OK";
+    res.writeHead(res.statusCode, { "Content-Type": "text/plain" });
+    res.end(res.statusCode + " " + res.statusMessage);
+  });
+  
 
 app.get("/app/flip", (req, res) => {
   var flipVar = coinFlip();
@@ -179,7 +175,17 @@ app.get("/app/flip/call/:tails", (req, res) => {
   res.status(200).json(flipACoin("tails"));
 });
 
+// Flip a bunch of coins with one body variable (number)
+app.post('/app/flip/coins/', (req, res, next) => {
+    const flips = coinFlips(req.body.number)
+    const count = countFlips(flips)
+    res.status(200).json({"raw":flips,"summary":count})
+})
 
+app.post('/app/flip/call/', (req, res, next) => {
+    const game = flipACoin(req.body.guess)
+    res.status(200).json(game)
+})
 
 // Define default endpoint
 // Default response for any other request
