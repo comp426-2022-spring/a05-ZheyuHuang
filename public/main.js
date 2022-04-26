@@ -89,15 +89,6 @@ async function flipCoins(event) {
         console.log(flips);
         document.getElementById("heads").innerHTML = "Heads: " + flips.summary.heads;
         document.getElementById("tails").innerHTML = "Tails: " + flips.summary.tails;
-        const par = document.getElementById("raw")
-        while (par.firstChild) {
-            par.removeChild(par.firstChild);
-        }
-        for(var i=0; i<flips.raw.length; i++) {
-            var img = document.createElement("img")
-            img.src = "./assets/img/" + flips.raw[i] + ".png"
-            par.appendChild(img)
-        }
         //document.getElementById("raw").innerHTML = "Actual Flips: " + flips.raw;
     } catch (error) {
         console.log(error);
@@ -124,56 +115,3 @@ async function sendFlips({ url, formData }) {
    
 
 // Guess a flip by clicking either heads or tails button
-
-const guess2 = document.getElementById('guessnav')
-guess2.addEventListener('click', showGuess)
-function showGuess() {
-    hideDivs()
-    document.getElementById('guess').setAttribute('class', 'active')
-}
-
-const guessForm = document.getElementById('call')
-guessForm.addEventListener('submit', guessCoin)
-
-async function guessCoin(event) {
-    event.preventDefault()
-
-    const url = document.baseURI + 'app/flip/call/'
-
-    try {
-        const formData = new FormData(event.currentTarget)
-        const formDataJson = Object.fromEntries(formData)
-        var input
-        if (parseInt(formDataJson.input) == 1) {
-            input = JSON.stringify({ 'guess': 'tails' })
-        } else {
-            input = JSON.stringify({ 'guess': 'heads'})
-        }
-        const options = {
-            method: "POST",
-            headers: {"Content-Type": 'application/json', Accept: 'application/json'},
-            body: input
-        }
-
-        const result = await fetch(url, options).then(function(response) {
-            return response.json()
-        })
-
-        console.log(result)
-        document.getElementById('guessresult').setAttribute('class', 'visible')
-        if (result.result == 'win') {
-            document.getElementById('guessresult').innerHTML = `
-            <p>Result: ` + result.flip +`</p>
-            <p><span style="color:green">YOU WIN!</span></p>
-            `
-        } else {
-            document.getElementById('guessresult').innerHTML = `
-            <p>Result: ` + result.flip + `</p>
-            <p><span style="color:red">you lose :(</span></p>
-            `
-        }
-        
-    } catch(error) {
-        console.log(error)
-    }
-}
