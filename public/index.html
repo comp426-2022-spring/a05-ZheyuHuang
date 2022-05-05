@@ -33,16 +33,69 @@
       <button id="guessnav">Guess the result</button>
     </nav>
     <div id="home">
-      
+      <h3>Coin Flip!</h3>
+  
+      <br>
+      <h4>There are 3 games to choose from : </h4>
+  
+      <ul>
+        <li><b>One Coin Flip</b></li>
+        <p>The game will randomly flip one coin.</p>
+  
+  
+        <li><b>Multiple Coin Flips</b></li>
+        <p>The game will flip multiple coins and display the output.</p>
+  
+  
+        <li><b>Guess the Result</b></li>
+        <p>The game will generate a random flip, and you have to guess the result of the flip</p>
+  
+      </ul>
+      <br>
+    
     </div>    
+
     <div id="single" class="hidden">
-      
+          <h1>Flip a Coin</h1>
+          <!-- A "coin" button -->
+          <button id="coin">Flip?</button>
+          <!-- A status paragraph -->
+              <p id="active"></p>
+          <!-- A result paragraph-->
+              <p>Result: <span id="result"></span></p>
+          <!-- An image of a US quarter (North Carolina variant) -->
+              <img src="./assets/img/coin.png" id="quarter">
     </div>
+
     <div id="multi" class="hidden">
-      
+        <h1>Flip Coins</h1>
+        <form id="coins">
+          <label for="number">
+            <strong>Choose the amount you want to flip</strong>
+          </label>
+          <input type="number" name="number" id="number">
+          <input type="submit" value="Go!">
+        </form>
+
+        <h2>Results</h2>
+          <p id="heads"></p>
+          <p id="tails"></p>
     </div>
+
+
     <div id="guess" class="hidden">
-      
+      <form id="call">
+        <p><strong>Heads or Tails?</strong></p>
+        <label for="input">Heads</label>
+        <input type="range" id="input" name="input" min="0" max="1" width="10px">
+        <label for="input">Tails</label>
+        <input type="submit" value="Flip!">
+      </form>
+
+      <div id="guessresult" class="hidden">
+      </div>
+
+
     </div>
 	<script src="main.js"></script>
   </body>
